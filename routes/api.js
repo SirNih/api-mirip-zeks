@@ -35,7 +35,7 @@ var request = require('request');
 var fs = require('fs');
 var router  = express.Router();
 var creator = '友Abyss Bot' // ubah jadi nama lu
-const listkey = ["Alphabot","Zeeone","ZeeoneOfc","sigit"]; // ubah apikey nya, tambah aja klo mau
+const listkey = ["sigit"]; // ubah apikey nya, tambah aja klo mau
 
 var { otakudesu, covid, ongoing, komiku, tebakgambar, surah, sholat, lirik, chara,wattpad, playstore, linkwa, pinterest ,igdl,igstory, igstalk,twitter,fbdown,youtube,ttdownloader} = require(__path + '/lib/scrape.js');
 var { color, bgcolor } = require(__path + '/lib/color.js');
@@ -459,6 +459,27 @@ router.get('/asupan/gheayubi', async (req, res, next) => {
        	if(!apikey) return res.json(loghandler.apikey)
         if(listkey.includes(apikey)){
        fetch(encodeURI(`https://raw.githubusercontent.com/binjaicity/warga62/master/geayubi.json`))
+        .then(response => response.json())
+        .then(async data => {
+        var result = data[Math.floor(Math.random() * data.length)];
+        var buffer = result.url;
+          data = await fetch(buffer).then(v => v.buffer())
+         await fs.writeFileSync(__path +'/tmp/chika.mp4', data)
+        res.sendFile(__path+'/tmp/chika.mp4')
+         })
+         .catch(e => {
+         	console.log(e);
+         	res.json(loghandler.error)
+})
+} else {
+  res.json(loghandler.apikey)
+}
+})
+router.get('/asupan/bokep', async (req, res, next) => {
+          var apikey = req.query.apikey
+       	if(!apikey) return res.json(loghandler.apikey)
+        if(listkey.includes(apikey)){
+       fetch(encodeURI(`https://raw.githubusercontent.com/SirNih/warga62/master/Bokep.json`))
         .then(response => response.json())
         .then(async data => {
         var result = data[Math.floor(Math.random() * data.length)];
